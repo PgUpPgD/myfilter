@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<div class="layui-form">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">开始日期</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="beginTime" placeholder="yyyy-MM-dd">
+            </div>
+
+            <label class="layui-form-label">结束日期</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="endTime" placeholder="yyyy-MM-dd">
+            </div>
+            <button class="layui-btn" data-type="reload">查询</button>
+        </div>
+    </div>
+</div>
+
+<table class="layui-hide" id="demo" lay-filter="test"></table>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" href="/static/layui/css/layui.css">
+<script type="text/javascript" src="/static/layui/layui.js" charset="UTF-8"></script>
+
+<script>
+    layui.use(['laydate','table'], function() {
+        var laydate = layui.laydate
+            ,table = layui.table
+        //常规用法
+        laydate.render({
+            elem: '#beginTime'
+        });
+        laydate.render({
+            elem: '#endTime'
+        });
+
+        //执行一个table实例
+        table.render({
+            elem:"#demo",
+            id: 'testReload',
+            height:420,
+            url:'transferInfo',//数据接口
+            title:'用户表',
+            page:true,//开启分页
+            cols:[[//表头
+                {field:'createTime', title:'创建日期',width:200,sort:true,fixed:'left'}
+                ,{field:'income', title:'收入',width:80}
+                ,{field:'output', title:'支出',width:80}
+                ,{field:'consumeType', title:'消费类型',width:80}
+                ,{field:'balance', title:'余额',width:80}
+                ,{field:'comment', title:'备注',width:80}
+                ,{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}
+            ]]
+        });
+
+        var active = {
+            reload: function(){
+
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: { //额外提交参数
+                        beginTime:$("#beginTime").val(),
+                        endTime:$("#endTime").val()
+                    }
+                }, 'data');
+            }
+        };
+
+        $('.layui-form-item .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+
+</script>
+
+<!--<script type="text/javascript">-->
+<!--    $(function () {-->
+<!--        //transferInfo();-->
+<!--    })-->
+<!--    function  transferInfo() {-->
+<!--        alert("12");-->
+<!--        $.ajax({-->
+<!--            type:"get",-->
+<!--            url:"transferInfo",-->
+<!--            data:{"beginTime":$("input[name='beginTime']").val(),-->
+<!--                    "endTime":$("input[name='endTime']").val()},-->
+<!--            dataType:"json",-->
+<!--            success:function (data) {-->
+<!--                if (data.code == 0) {-->
+<!--                   alert(data.info);-->
+<!--                    $("tbody").empty();-->
+<!--                    var infos = data.info;-->
+<!--                    $(infos).each(function () {-->
+<!--                        var html = "<tr>\n" +-->
+<!--                            "<td>" + this.createTime + "</td>\n" +-->
+<!--                            "<td>" + this.income + "</td>\n" +-->
+<!--                            "<td>" + this.output + "</td>\n" +-->
+<!--                            "<td>" + this.consumeType + "</td>\n" +-->
+<!--                            "<td>" + this.balance + "</td>\n" +-->
+<!--                            "<td>" + this.comment + "</td>\n" +-->
+<!--                             "\n"  +-->
+<!--                             "</tr>"-->
+<!--                        $("tbody").append($(html));-->
+<!--                    })-->
+<!--                }-->
+<!--            }-->
+<!--        })-->
+<!--    }-->
+<!--</script>-->
+</body>
+</html>

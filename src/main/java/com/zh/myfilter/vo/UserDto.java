@@ -1,0 +1,9 @@
+package com.zh.myfilter.vo;
+
+import lombok.Data;
+
+@Data
+public class UserDto {
+    private String username;
+    private String password;
+}
