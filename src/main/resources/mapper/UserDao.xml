@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zh.myfilter.dao.UserDao">
+
+    <select id="findByUserName" resultType="com.zh.myfilter.entity.UserEntity">
+        select * from student where name = #{name}
+    </select>
+
+    <select id="findAll" resultType="com.zh.myfilter.entity.UserEntity">
+        select * from student
+    </select>
+
+    <select id="findPermsByName" resultType="string">
+        SELECT DISTINCT p.pre_name FROM student AS s
+        LEFT JOIN sru_role AS sr ON s.uid = sr.uid
+        LEFT JOIN role AS r ON r.rid = sr.rid
+        LEFT JOIN role_perm AS rp ON r.rid = rp.rid
+        LEFT JOIN permision AS p ON p.pid = rp.pid
+        WHERE s.`name` = #{name} and p.pre_name is not null
+    </select>
+
+    <insert id="userSignIn">
+        insert into student (name, pass) values (#{name}, #{pass})
+    </insert>
+
+    <update id="updateUser">
+        update student set pass = #{pass}, salt = #{salt} where uid = {uid}
+    </update>
+
+
+</mapper>

@@ -1,5 +1,6 @@
 package com.zh.myfilter;
 
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -7,7 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 class MyfilterApplicationTests {
 
     @Test
-    void contextLoads() {
+    public void exception1(){
+
     }
+
 
 }

@@ -8,7 +8,7 @@
 <body>
 
 <form method="post" onsubmit="return false;">
-    用户名:<input type="text" name="username" value="admin"/><br />
+    用户名:<input type="text" name="username" value="Admin"/><br />
     密码:<input type="password" name="password" value="123" /><br />
     <input type="submit" value="登录" /><br />
 </form>
@@ -16,16 +16,15 @@
 <script type="text/javascript">
     $("form").submit(function(){
         $.ajax({
-            type:"post",
-            // contentType: "application/json;charset=UTF-8",
+            type:"get",
             url:"login.do",
             data:$("form").serialize(),
             dataType:"json",
             success:function(data){
                 if(data.code == 0){
-                    window.location.href = "index.html";
+                    window.location.href = "index";
                 }else{
-                    alert(data.info);
+                    alert(data.msg);
                 }
             },
             error:function(){

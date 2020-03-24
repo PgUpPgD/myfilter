@@ -36,6 +36,13 @@ public class JsonUtil {
         u.setData(null);
         return u;
     }
+    public static JsonUtil setERROR(int code, String msg){
+        JsonUtil u = new JsonUtil();
+        u.setCode(code);
+        u.setMsg(msg);
+        u.setData(null);
+        return u;
+    }
     public static JsonUtil setERROR(Boolean succ){
         if (succ){
             return setOk();

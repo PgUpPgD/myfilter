@@ -10,6 +10,8 @@ public class UserEntity implements Serializable {
     private String name;
     private Integer age;
     private String pass;
-    private String img;
-    private String url;
+    private String imgUrl;
+    private String note;
+    private Double balance;
+    private String salt;
 }
