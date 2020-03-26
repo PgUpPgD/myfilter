@@ -29,5 +29,18 @@
         update student set pass = #{pass}, salt = #{salt} where uid = {uid}
     </update>
 
+    <select id="findById" resultType="com.zh.myfilter.entity.UserEntity">
+        select * from student where uid = #{id}
+    </select>
+
+    <update id="updateUserB">
+        update student set balance = #{balance} where uid = #{uid}
+    </update>
+
+    <insert id="insertBank">
+        insert into bank (uid, name, balance, subtract, add_money, creat_time)
+        values (#{uid}, #{name}, #{balance}, #{subtract}, #{addMoney}, now())
+    </insert>
+
 
 </mapper>

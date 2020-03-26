@@ -1,6 +1,7 @@
 package com.zh.myfilter.service;
 
 import com.zh.myfilter.entity.UserEntity;
+import com.zh.myfilter.utils.JsonUtil;
 
 import java.util.List;
 
@@ -10,5 +11,5 @@ public interface UserService {
     List<String> findPermsByName(String name);
     int userSignIn(String name, String pass);
     int updateUser(UserEntity user);
-    String transfer(String name, Integer uid, Double subtract);
+    JsonUtil transfer(String name, Integer uid, Double subtract, Integer tid);
 }

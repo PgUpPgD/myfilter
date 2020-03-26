@@ -3,9 +3,11 @@ package com.zh.myfilter.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.zh.myfilter.common.CodeMsg;
 import com.zh.myfilter.dao.UserDao;
+import com.zh.myfilter.entity.BankEntity;
 import com.zh.myfilter.entity.UserEntity;
 import com.zh.myfilter.exception.MyException;
 import com.zh.myfilter.service.UserService;
+import com.zh.myfilter.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -54,17 +56,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String transfer(String name, Integer uid, Double subtract) {
+    public JsonUtil transfer(String name, Integer uid, Double subtract, Integer tid) {
         //余额是否足够的判断
         UserEntity userName = userDao.findByUserName(name);
+        UserEntity userEntity = userDao.findById(tid);
         if (StringUtils.isEmpty(userName)){
             throw new MyException(1,codeMsg.getUserIsEmpty());
         }else if (userName.getUid() != uid){
             throw new MyException(1,codeMsg.getNotConsistent());
         }
+        //加钱
         UserEntity entity = new UserEntity();
-
-//        userDao.updateUser();
-        return null;
+        Double balance = userName.getBalance() + subtract;
+        entity.setBalance(balance);
+        entity.setUid(uid);
+        int i = userDao.updateUserB(entity);
+        //添加记录
+        BankEntity bankEntity = new BankEntity();
+        bankEntity.setBalance(balance);
+        bankEntity.setUid(uid);
+        bankEntity.setName(name);
+        bankEntity.setAddMoney(subtract);
+        int i1 = userDao.insertBank(bankEntity);
+        //减钱
+        UserEntity entity1 = new UserEntity();
+        entity1.setBalance(userEntity.getBalance() - subtract);
+        entity1.setUid(tid);
+        int i2 = userDao.updateUserB(entity1);
+        //添加记录
+        BankEntity bankEntity1 = new BankEntity();
+        bankEntity1.setName(userEntity.getName());
+        bankEntity1.setBalance(userEntity.getBalance() - subtract);
+        bankEntity1.setUid(tid);
+        bankEntity1.setSubtract(subtract);
+        int i3 = userDao.insertBank(bankEntity1);
+        return JsonUtil.setOk();
     }
 }

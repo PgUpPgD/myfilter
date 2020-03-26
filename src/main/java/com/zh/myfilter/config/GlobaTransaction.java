@@ -19,10 +19,11 @@ import java.util.Map;
 @Configuration
 public class GlobaTransaction {
     //写事务的超时时间为10秒
-    private static final int TX_METHOD_TIMEOUT = 10;
+    private static final int TX_METHOD_TIMEOUT = 5;
 
     //restful包下所有service包或者service的子包的任意类的任意方法
-    private static final String AOP_POINTCUT_EXPRESSION = "execution (* com.rr.service.impl.*.*(..))";
+    //第一个星表示任意返回值，第二个星表示任意类，第三任意方法，“ ..”表示任意参数
+    private static final String AOP_POINTCUT_EXPRESSION = "execution (* com.zh.myfilter.service.impl.*.*(..))";
 
     @Autowired
     private PlatformTransactionManager transactionManager;
@@ -56,8 +57,6 @@ public class GlobaTransaction {
 
         Map<String, TransactionAttribute> txMap = new HashMap<>();
         //只读事务
-        txMap.put("get*", readOnlyTx);
-        txMap.put("query*", readOnlyTx);
         txMap.put("find*", readOnlyTx);
         txMap.put("list*", readOnlyTx);
         txMap.put("count*", readOnlyTx);
@@ -73,6 +72,7 @@ public class GlobaTransaction {
         txMap.put("update*", requiredTx);
         txMap.put("modify*", requiredTx);
         txMap.put("delete*", requiredTx);
+        txMap.put("transfer*", requiredTx);
 
         NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
         source.setNameMap(txMap);

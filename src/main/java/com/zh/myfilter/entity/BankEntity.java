@@ -7,6 +7,7 @@ import java.util.Date;
 @Data
 public class BankEntity {
     private Integer id;
+    private Integer tid;
     private Integer uid;
     private String name;
     private Double balance;

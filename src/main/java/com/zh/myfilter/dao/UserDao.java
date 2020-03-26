@@ -11,8 +11,10 @@ public interface UserDao{
     List<UserEntity> findAll();
     UserEntity findByUserName(String name);
     List<String> findPermsByName(String name);
+    UserEntity findById(Integer id);
     int userSignIn(String name, String pass);
     int updateUser(UserEntity user);
-    int insertBank(BankEntity bank);            //交易详情
+    int updateUserB(UserEntity user);
+    int insertBank(BankEntity bank);
 
 }

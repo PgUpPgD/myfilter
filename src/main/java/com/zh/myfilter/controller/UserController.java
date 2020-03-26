@@ -109,16 +109,14 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequiresPermissions("min")
+//    @RequiresPermissions("min")
     @RequestMapping("/transfer.do")
     public JsonUtil transfer(BankEntity bank){
         String name = bank.getName();
         Integer uid = bank.getUid();
         Double subtract = bank.getSubtract();
-        userService.transfer(name, uid, subtract);
-
-
-        return JsonUtil.setOk();
+        Integer tid = bank.getTid();
+        return userService.transfer(name, uid, subtract, tid);
     }
 
 
