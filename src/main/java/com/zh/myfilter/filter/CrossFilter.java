@@ -4,7 +4,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//@WebFilter("/*")
+//@WebFilter("/*")  在类上加@CrossOrigin也可实现跨域
 public class CrossFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

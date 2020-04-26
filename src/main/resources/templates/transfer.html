@@ -26,6 +26,7 @@
     <h3>转账信息</h3>
     <form action="transfer.do" method="post" onsubmit="return false;">
         <table border="1">
+            <tr><input type="hidden" name="tid" value="1"></tr>
             <tr>
                 <th>姓名</th>
                 <td><input type="text" name="name" /></td>
@@ -50,16 +51,19 @@
 <script type="text/javascript">
     $("form").submit(function() {
         $.ajax({
-            type:"post",
+            type:"get",
             url:"transfer.do",
-            data:$.serialize(),
+            data:$("form").serialize(),
             dataType:"json",
-            success:function (data){
-                if (data.code() == 0){
+            success:function(data){
+                if (data.code == 0){
                     alert(data.msg);
                 } else {
                     alert(data.msg);
                 }
+                // $('form').find('input').each(function (index, item) {
+                //     $(item).val('')
+                // })
             },error:function () {
                 alert("ajax异常")
             }

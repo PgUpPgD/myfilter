@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zh.myfilter.dao.LitterUserDao">
+    <!--一对一-->
+    <resultMap id="ordermap" type="com.zh.myfilter.litterDemo.entity.Order">
+        <id property="oid" column="oid"></id>
+        <result property="number" column="num"></result>
+        <association property="user" javaType="com.zh.myfilter.litterDemo.entity.User">
+            <id property="id" column="id"></id>
+            <result property="username" column="username"></result>
+        </association>
+    </resultMap>
+    <select id="findOne" resultMap="ordermap">
+        select oid, num, id, username from orders, user
+        where orders.userid  = 2 and user.id = 2;
+    </select>
+    <!--一对多-->
+    <resultMap id="usermap" type="com.zh.myfilter.litterDemo.entity.User">
+        <id property="id" column="id"></id>
+        <result property="username" column="username"></result>
+        <collection property="orders" ofType="com.zh.myfilter.litterDemo.entity.Order">
+            <id property="oid" column="oid"></id>
+            <result property="number" column="num"></result>
+        </collection>
+    </resultMap>
+    <select id="findsAll" resultMap="usermap">
+        select oid, num, id, username from orders, user
+        where orders.userid = user.id;
+    </select>
+    <!--多对多-->
+    <resultMap id="rolmany" type="com.zh.myfilter.litterDemo.entity.Rol">
+        <id property="rid" column="rid"></id>
+        <result property="roleName" column="roleName"></result>
+        <collection property="users" ofType="com.zh.myfilter.litterDemo.entity.User">
+            <id property="id" column="id"></id>
+            <result property="username" column="username"></result>
+        </collection>
+    </resultMap>
+    <select id="findMany" resultMap="rolmany">
+        select u.username, r.role_name from user u
+        left outer join sru_role s on u.id = s.uid
+        left outer join role r on s.rid = r.rid
+    </select>
+
+
+</mapper>

@@ -90,6 +90,9 @@ public class UserServiceImpl implements UserService {
         bankEntity1.setUid(tid);
         bankEntity1.setSubtract(subtract);
         int i3 = userDao.insertBank(bankEntity1);
-        return JsonUtil.setOk();
+        if ((i == 0) || (i1 == 0) || (i2 == 0) || (i3 == 0)){
+            return JsonUtil.setOk(codeMsg.getAccountsError());
+        }
+        return JsonUtil.setOk(codeMsg.getAccountsOk());
     }
 }
