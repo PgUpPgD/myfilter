@@ -30,4 +30,5 @@ public class CodeMsg {
     @Value("${code.400}")
     private String operationFailure;
 
+
 }

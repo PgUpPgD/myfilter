@@ -39,7 +39,6 @@ public class MywebConfig implements WebMvcConfigurer {
         System.out.println("filter");
         return frBean;
     }
-    @SuppressWarnings({ "rawtypes", "unchecked" }) //禁止显示警告
 //    @Bean
 //    @Order(2)
     public FilterRegistrationBean<MyFilter> filterRegist() {
@@ -49,7 +48,6 @@ public class MywebConfig implements WebMvcConfigurer {
         System.out.println("filter");
         return frBean;
     }
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Bean
     public ServletListenerRegistrationBean<MyHttpSessionListener> listenerRegist() {
         ServletListenerRegistrationBean<MyHttpSessionListener> srb = new ServletListenerRegistrationBean<>();

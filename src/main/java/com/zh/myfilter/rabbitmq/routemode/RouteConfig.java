@@ -38,6 +38,6 @@ public class RouteConfig {
     @Bean
     public Binding directBinding3() {
         return BindingBuilder.bind(routQueue2()).to(directExchange()).with("red");
-    }
+}
 
 }

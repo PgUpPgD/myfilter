@@ -149,13 +149,16 @@ public class SeckillServiceImpl implements SeckillService {
         return JsonUtil.setERROR();
     }
 
+    private int count = 1;
+    private int coun = 1;
+    //线程安全的
+    ConcurrentHashMap<String, Boolean> concurrentHashMap = new ConcurrentHashMap<>();
     //预减库存（从redis中减） 好用（快）
     @Override
     public JsonUtil bySeckillGoods(Integer uid, Integer goodsId) {
-        //线程安全的
-        ConcurrentHashMap<String, Boolean> concurrentHashMap = new ConcurrentHashMap<>();
         Boolean bool = concurrentHashMap.get("goodsId" + goodsId);
         if (bool != null && bool == true){
+            System.out.println(count++);
             return JsonUtil.setERROR();
         }
 //        Object stock1 = redisTemplate.opsForHash().get("stock", "sid" + goodsId);
@@ -166,9 +169,16 @@ public class SeckillServiceImpl implements SeckillService {
             map.put("goodsId", goodsId);
             map.put("uid", uid);
             amqpTemplate.convertAndSend("queue.stock1", map);
+            return JsonUtil.setOk("OK:" + stock);
+        }else {
+            System.out.println("true" + coun++);
+            concurrentHashMap.put("goodsId" + goodsId, true);
         }
-        concurrentHashMap.put("goodsId" + goodsId, true);
         return JsonUtil.setERROR();
+    }
+
+    public static void main(String[] args) {
+
     }
 
 }

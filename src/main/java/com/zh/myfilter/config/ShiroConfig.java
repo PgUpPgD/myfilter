@@ -42,7 +42,7 @@ public class ShiroConfig {
         // anon: 允许匿名访问
         //不使用注解时，根据shiro的相关的内置过滤器名，来进行数据的过滤
         //使用注解时，需要配置三个bean（下方）
-        //filterChainDefinitionMap.put("/user/list","perms[user:list]");
+//        filterChainDefinitionMap.put("/user/list","perms[user:list]");
 
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");

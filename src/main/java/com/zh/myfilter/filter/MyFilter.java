@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Map;
 
 //@WebFilter(filterName = "MyFilter")
 public class MyFilter implements Filter {
@@ -33,8 +35,9 @@ public class MyFilter implements Filter {
             String token = request.getHeader("token");
             String s = stringRedisTemplate.opsForValue().get(token);
             if (StringUtils.isEmpty(s)){
-//                throw new MyException(1,"跳转登录页面");
-                wrapper.sendRedirect("login");
+                //wrapper.sendRedirect("login");
+                returnJson(response);
+                return;
             }
             chain.doFilter(req, resp);
         }
@@ -42,6 +45,24 @@ public class MyFilter implements Filter {
 
     public void init(FilterConfig config) throws ServletException {
 
+    }
+
+    private void returnJson(HttpServletResponse response){
+        PrintWriter writer = null;
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        try {
+            writer = response.getWriter();
+            Map<String, Object> result = PackageReturnResult.returnJson(400, "用户令牌token无效");
+            result.put("data", null);
+            writer.print(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(writer != null){
+                writer.close();
+            }
+        }
     }
 
 }

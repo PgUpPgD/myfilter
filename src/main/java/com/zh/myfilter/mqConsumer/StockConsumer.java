@@ -18,11 +18,15 @@ public class StockConsumer {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    private int count = 1;
+
     @RabbitHandler
     public void receive(Map<String, Object> map){
 
         Integer goodsId = (Integer)map.get("goodsId");
         Integer uid = (Integer)map.get("uid");
+        count ++;
+        System.out.println("当前订单数为：" + count);
 
 //        int v = seckillGoodsDao.callOrderProcedure(goodsId, uid);
 //        if(v == 0){  //生成订单成功
